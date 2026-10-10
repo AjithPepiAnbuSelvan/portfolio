@@ -3,6 +3,7 @@ import './polish.css';
 import './studio.css';
 import './finish.css';
 import { buildStory } from './story.js';
+import { createCompanion, createVoicePicker } from './companion.js';
 
 const skills = [
  ['Swift','Mobile','My main language for native iOS development.','Type safety · native APIs · maintainable code'],
@@ -50,11 +51,11 @@ let sdkStep=0;document.querySelector('#sdk-run').onclick=()=>{sdkStep=(sdkStep+1
 let flowStep=0;document.querySelector('#flow-run').onclick=()=>{flowStep=(flowStep+1)%3;document.querySelectorAll('.flow-step').forEach((s,i)=>s.classList.toggle('active',i===flowStep));document.querySelector('.flow-message').textContent=['Start an asynchronous request.','Handle the response or error.','Update the interface with the new state.'][flowStep]};
 const layers={View:'I keep the interface focused on rendering state and collecting user actions.',ViewModel:'Presentation logic connects user actions with changes in view state.',Data:'API access and persistence belong behind clear data boundaries.'};document.querySelectorAll('[data-layer]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-layer]').forEach(x=>x.classList.toggle('active',x===b));document.querySelector('#layer-description').textContent=layers[b.dataset.layer]});
 
-let tour=false,current='home',spoken='',speechSerial=0;
+let tour=false,current='home',spoken='',speechSerial=0,companion=null,voicePicker=null;
 const dock=document.querySelector('.voice-dock'),toggle=document.querySelector('#voice-toggle'),transcript=document.querySelector('.transcript');
 const sectionTitles={home:'A quick hello',about:'The person',skills:'My toolkit',work:'My engineering focus',experience:'My journey',contact:'Let’s talk'};
-function stopSpeech(){speechSerial++;if('speechSynthesis'in window)speechSynthesis.cancel();dock.classList.remove('speaking');document.querySelector('.hero-portrait').classList.remove('speaking')}
-function speak(section){stopSpeech();const serial=speechSerial;document.querySelector('#transcript-text').textContent=narratives[section];transcript.hidden=false;document.querySelector('#voice-section').textContent=sectionTitles[section];if(!('speechSynthesis'in window)){toggle.textContent='Voice unavailable · read transcript';return}const utterance=new SpeechSynthesisUtterance(narratives[section]);utterance.rate=.96;utterance.onstart=()=>{if(serial!==speechSerial)return;dock.classList.add('speaking');document.querySelector('.hero-portrait').classList.add('speaking')};utterance.onend=utterance.onerror=()=>{if(serial!==speechSerial)return;dock.classList.remove('speaking');document.querySelector('.hero-portrait').classList.remove('speaking')};speechSynthesis.speak(utterance);spoken=section}
+function stopSpeech(){speechSerial++;if('speechSynthesis'in window)speechSynthesis.cancel();dock.classList.remove('speaking');document.querySelector('.hero-portrait').classList.remove('speaking');companion?.setSpeaking(false)}
+function speak(section){stopSpeech();const serial=speechSerial;document.querySelector('#transcript-text').textContent=narratives[section];transcript.hidden=false;document.querySelector('#voice-section').textContent=sectionTitles[section];if(!('speechSynthesis'in window)){toggle.textContent='Voice unavailable · read transcript';return}const utterance=new SpeechSynthesisUtterance(narratives[section]);utterance.rate=.96;const voice=voicePicker?.getVoice();if(voice){utterance.voice=voice;utterance.lang=voice.lang}utterance.onstart=()=>{if(serial!==speechSerial)return;dock.classList.add('speaking');document.querySelector('.hero-portrait').classList.add('speaking');companion?.setSpeaking(true)};utterance.onend=utterance.onerror=()=>{if(serial!==speechSerial)return;dock.classList.remove('speaking');document.querySelector('.hero-portrait').classList.remove('speaking');companion?.setSpeaking(false)};speechSynthesis.speak(utterance);spoken=section}
 toggle.onclick=()=>{tour=!tour;toggle.setAttribute('aria-pressed',String(tour));toggle.textContent=tour?'Ⅱ Pause my tour':'▶ Start my tour';if(tour)speak(current);else stopSpeech()};
 document.querySelector('#intro').onclick=()=>{tour=true;toggle.setAttribute('aria-pressed','true');toggle.textContent='Ⅱ Pause my tour';speak('home')};
 document.querySelector('#voice-stop').onclick=()=>{tour=false;stopSpeech();toggle.setAttribute('aria-pressed','false');toggle.textContent='▶ Start my tour';transcript.hidden=true};document.querySelector('#transcript-close').onclick=()=>transcript.hidden=true;
@@ -95,3 +96,5 @@ buildStory();
 narratives.story="A tap is only the beginning. I work with native interfaces, SDK integrations, and the architecture beneath them. Follow the layers from the interface, through SDK and state, to data and persistence. This is an illustrative architecture scene, and you can explore each layer.";
 sectionTitles.story='Inside My Native World';
 observer.observe(document.querySelector('#story'));
+companion=createCompanion();
+voicePicker=createVoicePicker(()=>{tour=false;toggle.setAttribute('aria-pressed','false');toggle.textContent='▶ Start my tour';speak('home')});
