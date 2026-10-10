@@ -1,0 +1,11 @@
+.studio-watermark{color:rgba(172,195,255,.025);pointer-events:none}
+@media(min-width:701px) and (max-height:850px){.hero{min-height:740px;padding-top:100px;padding-bottom:80px}.device-scene.hero-portrait{height:570px}.device-shell{width:260px;height:535px;top:5px}.device-display{border-radius:38px}.device-shell{border-radius:45px}.studio-intro h1{font-size:clamp(56px,6.3vw,90px)}.studio-intro{padding-bottom:25px}.studio-credentials{margin-top:30px}.studio-scroll{bottom:66px}.callout-two{bottom:66px}.lock-time{font-size:60px}.lock-screen{padding-top:60px}.lock-portrait{top:130px}.os-home{padding-top:55px}.os-home h3{font-size:37px;margin-bottom:16px}.home-widget{padding:11px}.os-app-grid{margin-top:24px}.os-note{margin-top:15px;font-size:8px}.os-icon{width:37px;height:37px}.os-app-grid>button{font-size:5px}.os-dock{padding:8px 20px}.device-caption{bottom:3px}}
+.lock-portrait img{bottom:20px;width:115%;max-width:none;left:-7.5%}
+.device-shell:focus-within{transform:translateX(-50%) rotate(0) rotateY(0)}
+.lock-screen{touch-action:pan-x}
+.device-scene.speaking .dynamic-island>span{background:#b6ceff;box-shadow:0 0 10px #9dbdff;animation:voicePulse .5s infinite alternate}
+.device-scene.speaking .dynamic-island{box-shadow:0 0 0 2px #87afff30}
+.studio-intro{animation:hello .8s ease-out both}
+.device-shell{animation:deviceArrival 1.2s cubic-bezier(.2,.8,.2,1) both}
+@keyframes deviceArrival{from{opacity:0;translate:0 30px}to{opacity:1;translate:0 0}}
+.studio-primary:focus-visible,.os-app button:focus-visible,.os-home button:focus-visible{outline:2px solid #b8d2ff;outline-offset:3px}
