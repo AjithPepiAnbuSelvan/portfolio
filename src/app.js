@@ -2,6 +2,7 @@ import './experience.css';
 import './polish.css';
 import './studio.css';
 import './finish.css';
+import { buildStory } from './story.js';
 
 const skills = [
  ['Swift','Mobile','My main language for native iOS development.','Type safety · native APIs · maintainable code'],
@@ -90,3 +91,7 @@ deviceContent.addEventListener('pointerup',e=>{if(devicePage==='lock'&&swipeStar
 deviceContent.addEventListener('pointercancel',()=>swipeStart=null);
 document.querySelectorAll('.app-icon').forEach((icon,i)=>{icon.innerHTML=svg(i===10?'layers':i===11?'work':i===12?'work':i===13?'layers':'code')});
 const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');revealObserver.unobserve(e.target)}}),{threshold:.1});document.querySelectorAll('.section-heading,.focus-card,.timeline article,.about-grid,.toolkit-layout').forEach(el=>{el.classList.add('reveal');revealObserver.observe(el)});
+buildStory();
+narratives.story="A tap is only the beginning. I work with native interfaces, SDK integrations, and the architecture beneath them. Follow the layers from the interface, through SDK and state, to data and persistence. This is an illustrative architecture scene, and you can explore each layer.";
+sectionTitles.story='Inside My Native World';
+observer.observe(document.querySelector('#story'));
