@@ -1,0 +1,2 @@
+@media(min-width:701px){.hero{min-height:620px}.hero-content{padding-top:10px;padding-bottom:80px}.hero-portrait{height:560px;align-self:center;padding-bottom:55px}.hero-portrait>img{width:500px;max-height:none;margin-bottom:0}.hello-bubble{top:75px;right:5px;z-index:3}.portrait-caption{bottom:50px}.name-backdrop{top:-20px}.hero-note{margin-bottom:110px}}
+@media(min-width:1051px){.hero-portrait{height:640px}.hero-portrait>img{width:clamp(520px,43vw,690px)}.hello-bubble{top:110px}.hero-content{padding-top:70px}}
